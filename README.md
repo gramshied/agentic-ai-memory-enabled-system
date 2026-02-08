@@ -1,46 +1,57 @@
-Agentic AI Customer Retention Decision System
-Problem
+# Tool-Using Agentic AI Decision System (Finance-Governed)
 
-Traditional churn models predict who may leave but do not answer what should be done.
-This project builds an Agentic AI decision system that transforms churn risk predictions into reasoned, auditable retention actions for managerial decision-making.
+## Overview
+This project implements a **tool-using Agentic AI system** that transforms churn risk signals into **finance-safe business decisions**.  
+Unlike advisory agents, this system executes actions through tools, validates outcomes against hard constraints, and overrides decisions when policies are violated.
 
-System Design
+---
 
-The system uses a multi-agent architecture with explicit roles:
+## Problem
+Business decisions often require **calculations, policy checks, and validation**, not just reasoning.  
+This system bridges that gap by enabling AI agents to:
+- Select tools
+- Execute calculations
+- Enforce finance constraints
+- Produce auditable decisions
 
-Analyst Agent – interprets customer data and churn risk
+---
 
-Planner Agent – proposes retention strategies based on policy rules
+## Agent Architecture
 
-Critic Agent – validates and moderates decisions to avoid over-intervention
+### Agents
+- **Analyst Agent** – Interprets churn risk and customer context  
+- **Planner Agent** – Proposes retention strategies  
+- **Tool Selector Agent** – Determines required tools  
+- **Tool Executor Agent** – Executes calculations and checks  
+- **Validator Agent** – Enforces finance constraints and overrides decisions  
+- **Explainer Agent** – Produces finance-ready explanations  
 
-Explainer Agent – generates manager-friendly decision summaries
+### Execution Flow
 
-Agents operate in a deterministic, auditable pipeline rather than relying on opaque prompt-based reasoning.
+---
 
-Decision Logic
+## Tooling & Governance
+- Discount cost calculator  
+- Finance constraint checker (≤ ₹500 per customer)  
+- Automatic decision override when constraints are violated  
 
-High churn risk (≥ 0.5) triggers proactive retention actions
+All decisions are **deterministic, auditable, and policy-compliant**.
 
-Business rules ensure revenue-sensitive decision-making
+---
 
-Internal critique prevents unnecessary incentives
+## Key Features
+- Tool-using Agentic AI  
+- Hard business constraint enforcement  
+- Decision override authority  
+- Finance-aligned explanations  
+- Modular, extensible architecture  
 
-Output
+---
 
-The system produces:
+## Tech Stack
+Python · Modular agents · Rule-based governance
 
-Risk assessment
+---
 
-Recommended retention actions
-
-Rationale and confidence level
-Designed explicitly for manager consumption, not raw ML outputs.
-
-Why Agentic AI
-
-This project demonstrates agent orchestration, self-critique, and explainability, moving beyond single-model predictions to decision intelligence systems.
-
-Tech Stack
-
-Python · Rule-based reasoning · Modular agent architecture
+## Positioning
+This project demonstrates **operational Agentic AI**, where agents act, validate, and govern decisions rather than merely generating recommendations.

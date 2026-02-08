@@ -1,79 +1,79 @@
-import streamlit as st
-
 from agents.analyst import AnalystAgent
 from agents.planner import PlannerAgent
 from agents.critic import CriticAgent
 from agents.explainer import ExplainerAgent
 
+from agents.tool_selector import ToolSelectorAgent
+from agents.tool_executor import ToolExecutorAgent
+from agents.validator import ValidatorAgent
 
-def run_agentic_decision(customer_profile, churn_probability):
+
+def run_tool_using_agentic_decision(customer_profile, churn_probability, discount_percentage):
+    # Instantiate agents
     analyst = AnalystAgent()
     planner = PlannerAgent()
-    critic = CriticAgent()
+    tool_selector = ToolSelectorAgent()
+    tool_executor = ToolExecutorAgent()
+    validator = ValidatorAgent()
     explainer = ExplainerAgent()
 
+    # Step 1: Risk analysis
     analysis = analyst.analyze(customer_profile, churn_probability)
+
+    # Step 2: Initial planning
     plan = planner.plan(analysis)
-    critique = critic.review(plan)
-    explanation = explainer.explain(analysis, plan, critique)
+    proposed_actions = plan["recommended_actions"]
+
+    # Step 3: Tool selection
+    tool_plan = tool_selector.select_tools(
+        analysis,
+        proposed_discount_percentage=discount_percentage
+    )
+
+    # Step 4: Tool execution (facts)
+    execution_results = {}
+    if tool_plan:
+        execution_results = tool_executor.execute(tool_plan)
+
+    # Step 5: Validation (finance authority)
+    validation = validator.validate(proposed_actions, execution_results)
+
+    # Step 6: Explanation
+    explanation = explainer.explain(
+        analysis=analysis,
+        plan=plan,
+        critique={
+            "approved": validation["approved"],
+            "final_actions": validation["final_actions"],
+            "concerns": validation["validation_notes"]
+        }
+    )
+
+    # Attach finance facts if present
+    if "finance_summary" in execution_results:
+        explanation["finance_summary"] = execution_results["finance_summary"]
 
     return explanation
 
 
-# ---------------- UI ---------------- #
+if __name__ == "__main__":
+    # Example input
+    customer_profile = {
+        "tenure": 4,
+        "contract": "Month-to-month",
+        "monthly_charges": 3000,
+        "internet_service": "Fiber optic"
+    }
 
-st.set_page_config(page_title="Agentic AI Retention Decision System")
+    churn_probability = 0.62
+    proposed_discount_percentage = 20  # %
 
-st.title("🤖 Agentic AI Customer Retention Decision System")
-st.write(
-    "This system transforms churn risk predictions into "
-    "reasoned, manager-ready retention strategies using a multi-agent AI architecture."
-)
-
-st.divider()
-
-# Input
-st.subheader("Input Parameters")
-
-churn_probability = st.slider(
-    "Estimated Churn Probability",
-    min_value=0.0,
-    max_value=1.0,
-    value=0.55,
-    step=0.01
-)
-
-customer_profile = {
-    "tenure": st.slider("Tenure (months)", 0, 72, 6),
-    "contract": st.selectbox(
-        "Contract Type",
-        ["Month-to-month", "One year", "Two year"]
-    ),
-    "monthly_charges": st.slider("Monthly Charges", 0, 150, 70),
-    "internet_service": st.selectbox(
-        "Internet Service",
-        ["DSL", "Fiber optic", "No"]
+    decision = run_tool_using_agentic_decision(
+        customer_profile,
+        churn_probability,
+        proposed_discount_percentage
     )
-}
 
-st.divider()
-
-if st.button("Generate Retention Decision"):
-    decision = run_agentic_decision(customer_profile, churn_probability)
-
-    st.subheader("📌 Decision Summary")
-    st.write(decision["summary"])
-
-    st.subheader("⚠️ Risk Assessment")
-    st.write(decision["risk_assessment"])
-
-    st.subheader("✅ Recommended Actions")
-    for action in decision["recommended_actions"]:
-        st.write(f"- {action}")
-
-    st.subheader("🧠 Rationale")
-    for reason in decision["rationale"]:
-        st.write(f"- {reason}")
-
-    st.subheader("📊 Decision Confidence")
-    st.write(decision["confidence"])
+    print("\n=== LEVEL 2: TOOL-USING AGENTIC AI DECISION ===\n")
+    for key, value in decision.items():
+        print(f"{key.upper()}:\n{value}\n")
